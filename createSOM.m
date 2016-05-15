@@ -11,7 +11,7 @@ function [ SOM ] = createSOM( FileName, Nx, Ny, w, r0, lambda, L0, Tolerance, Ma
     load(FileName); %Load the data into DATA
     
     rng shuffle
-    SOM=rand(Nx,Ny,w);  %initialize the SOM
+    SOM=100*rand(Nx,Ny,w);  %initialize the SOM
     SOM2=SOM;  %copy to get error
     
     Iterations = 0;  %initialize values to get set
@@ -41,7 +41,7 @@ function [ SOM ] = createSOM( FileName, Nx, Ny, w, r0, lambda, L0, Tolerance, Ma
             for s=1:Nx
                 for t=1:Ny
                     for u=1:w
-                        SOM(s,t,u) = SOM(s,t,u) + DecayMap(s,t) * ( V(u) - SOM(s,t,u) );
+                        SOM2(s,t,u) = SOM(s,t,u) + DecayMap(s,t) * ( V(u) - SOM(s,t,u) );
                     end
                 end
             end
@@ -49,7 +49,12 @@ function [ SOM ] = createSOM( FileName, Nx, Ny, w, r0, lambda, L0, Tolerance, Ma
         end
         
         if Graph
-            surf(getWeights(SOM));pause(0.05);
+            subplot(1,3,1)
+            surf(getWeights(SOM));
+            subplot(1,3,2)
+            imagesc(getWeights(SOM));
+            subplot(1,3,3)
+            imagesc(getWeights(SOM)-getWeights(SOM2));pause(0.05);
         end
         
         
